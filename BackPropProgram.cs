@@ -449,15 +449,17 @@ namespace CodingBackProp
 
                 if (Verbose && epoch % errInterval == 0 && epoch < maxEpochs)
                 {
-                    double trainErr = useCrossEntropy ? CrossEntropyError(trainData)
-                                                      : Error(trainData);
-                    string errName = useCrossEntropy ? "cross-entropy" : "MSE";
-                    string line = "epoch = " + epoch + "  " + errName + " error = " +
-                      trainErr.ToString("F4");
+                    double trainErr = Error(trainData);
+                    Console.Write("epoch = " + epoch + "  error = " +
+                      trainErr.ToString("F4"));
+                    //Console.ReadLine();
+
+                    if (useCrossEntropy)
+                        Console.Write("  cross-entropy error = " +
+                          CrossEntropyError(trainData).ToString("F4"));
                     if (weightDecay > 0.0)
-                        line += "  weight penalty = " +
-                          (0.5 * weightDecay * SumSquaredWeights()).ToString("F4");
-                    Console.WriteLine(line);
+                        Console.WriteLine("  weight penalty = " +
+                          (0.5 * weightDecay * SumSquaredWeights()).ToString("F4"));
                 }
 
                 Shuffle(sequence); // visit each training data in random order
